@@ -5,41 +5,41 @@ import java.util.Iterator;
 public class Queue<E extends Object & Comparable<E>> implements AbstractCollections<E> {
     @Override
     public void push(E element) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public E pop() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public E top() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int size() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public AbstractCollections<E> copy() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public AbstractCollections<E> clone() throws CloneNotSupportedException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
