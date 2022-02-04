@@ -30,7 +30,7 @@ public interface AbstractCollections<E> extends Iterable<E>, Cloneable {
 
     boolean equals(Object o);
 
-    AbstractCollections<E> cloned();
+    AbstractCollections<E> copy();
 
     AbstractCollections<E> clone() throws CloneNotSupportedException;
 

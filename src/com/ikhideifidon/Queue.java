@@ -29,7 +29,7 @@ public class Queue<E extends Object & Comparable<E>> implements AbstractCollecti
     }
 
     @Override
-    public AbstractCollections<E> cloned() {
+    public AbstractCollections<E> copy() {
         return null;
     }
 

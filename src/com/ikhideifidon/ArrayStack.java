@@ -11,7 +11,7 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
      * First-Out (LIFO) principle.
      */
     public static final int CAPACITY = 1000;            // Default array capacity.
-    private final E[] data;                                   // Generic array used for storage.
+    private E[] data;                                   // Generic array used for storage.
     private int t = 0;                                  // Index of the top element in stack.
 
     public ArrayStack() { this(CAPACITY); }             // Constructs stack with default capacity
@@ -90,8 +90,6 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     public boolean equals(Object o) {
         if (o == this)              // If they point to the same object return true.
             return true;
-        if (o == null)
-            return false;
         if (!(o instanceof ArrayStack otherArrayStack))
             return false;
         if (this.size() != otherArrayStack.size())
@@ -105,9 +103,48 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
         return true;
     }
 
+    /**
+    public int hashCode() {
+        int result = 1;
+
+        for (Object element : data)
+            result = 31 * result + (element == null ? 0 : element.hashCode());
+
+        return result;
+    }
+    */
+
+    // hashCode method with lazily initialized cached hash code
+    private int hashCode;                   // Automatically initialized to 0
     @Override
-    public ArrayStack<E> cloned() {
-        ArrayStack<E> other = new ArrayStack<>();
+    public int hashCode() {
+        int result = hashCode;
+        if (result == 0) {
+            for (Object element : data)
+                result = 31 * result + (element == null ? 0 : element.hashCode());
+            hashCode = result;
+        }
+        return result;
+    }
+
+    /**
+     * Clone method for class with references to mutable state.
+     * Its mutability comes from the nonfinal class and its nonfinal fields.
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public AbstractCollections<E> clone() {
+        try {
+            ArrayStack<E> result = (ArrayStack<E>) super.clone();
+            result.data = data.clone();
+            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    public AbstractCollections<E> copy() {
+        AbstractCollections<E> other = new ArrayStack<>();
         if (!isEmpty()) {
             int index = 0;
             while (index < size()) {
@@ -116,12 +153,6 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
             }
         }
         return other;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public AbstractCollections<E> clone() throws CloneNotSupportedException{
-        return (AbstractCollections<E>) super.clone();
     }
 
 
