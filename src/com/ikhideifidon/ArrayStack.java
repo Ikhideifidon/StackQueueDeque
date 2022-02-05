@@ -121,8 +121,8 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     public int hashCode() {
         int result = hashCode;
         if (result == 0) {
-            for (Object element : data)
-                result = 31 * result + (element == null ? 0 : element.hashCode());
+            for (int i = 0; i < size(); i++)
+                result = 31 * result + (data[i] == null ? 0 : data[i].hashCode());
             hashCode = result;
         }
         return result;
@@ -145,7 +145,7 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     }
 
     public AbstractCollections<E> copy() {
-        AbstractCollections<E> other = new ArrayStack<>();
+        AbstractCollections<E> other = new ArrayStack<>(this.size());
         if (!isEmpty()) {
             int index = 0;
             while (index < size()) {
