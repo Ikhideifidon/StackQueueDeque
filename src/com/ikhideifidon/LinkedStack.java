@@ -2,11 +2,9 @@ package com.ikhideifidon;
 
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
-import com.ikhideifidon.SinglyLinkedList;
 
-public class LinkedStack<E extends Object & Comparable<E>> implements AbstractCollections<E> {
+public class LinkedStack<E extends Object & Comparable<E>> extends SinglyLinkedList<E> implements AbstractCollections<E> {
     /**
      * An Adapter Design Pattern for Stacks using an instance of the already
      * existing SinglyLinkedList class.
@@ -47,9 +45,18 @@ public class LinkedStack<E extends Object & Comparable<E>> implements AbstractCo
         return null;
     }
 
+    // The problem is here
     @Override
     public AbstractCollections<E> clone() throws CloneNotSupportedException {
-        return null;
+        return of();
+    }
+
+    private SinglyLinkedList<E> of() {
+        try {
+            return singlyLinkedList.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     @Override
@@ -60,6 +67,11 @@ public class LinkedStack<E extends Object & Comparable<E>> implements AbstractCo
     @Override
     public Iterator<E> iterator() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return singlyLinkedList.toString();
     }
 
 }
