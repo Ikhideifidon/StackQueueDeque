@@ -4,12 +4,13 @@ import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * The Stack Abstract Data Type using Array as the underlying Data Structure.
+ * A Stack is a collection of objects that are inserted and removed according to the Last-In,
+ * First-Out (LIFO) principle.
+ */
 public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCollections<E> {
-    /**
-     * The Stack Abstract Data Type using Array as the underlying Data Structure.
-     * A Stack is a collection of objects that are inserted and removed according to the Last-In,
-     * First-Out (LIFO) principle.
-     */
+
     public static final int CAPACITY = 1000;            // Default array capacity.
     private E[] data;                                   // Generic array used for storage.
     private int t = 0;                                  // Index of the top element in stack.
@@ -39,9 +40,9 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     public E pop() {
         if (isEmpty())
             throw new EmptyStackException();
-        E answer = data[t-1];
-        data[t-1] = null;
         t--;
+        E answer = data[t];
+        data[t] = null;
         return answer;
     }
 
@@ -58,7 +59,7 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
             int index = size() - 1;                 // index is equal to the element on top of the stack.
             @Override
             public boolean hasNext() {
-                return (index >= 0);
+                return index >= 0;
             }
 
             @Override
@@ -120,8 +121,8 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     public int hashCode() {
         int result = hashCode;
         if (result == 0) {
-            for (Object element : data)
-                result = 31 * result + (element == null ? 0 : element.hashCode());
+            for (int i = 0; i < size(); i++)
+                result = 31 * result + (data[i] == null ? 0 : data[i].hashCode());
             hashCode = result;
         }
         return result;
@@ -144,7 +145,7 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     }
 
     public AbstractCollections<E> copy() {
-        AbstractCollections<E> other = new ArrayStack<>();
+        AbstractCollections<E> other = new ArrayStack<>(this.size());
         if (!isEmpty()) {
             int index = 0;
             while (index < size()) {
@@ -154,6 +155,4 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
         }
         return other;
     }
-
-
 }

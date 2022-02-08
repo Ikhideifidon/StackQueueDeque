@@ -1,37 +1,36 @@
 package com.ikhideifidon;
 
+/**
+ * This is an interface that provides abstract methods for the Stacks, Queues and Deques
+ * Abstract Data Types.
+ */
 public interface AbstractCollections<E> extends Iterable<E>, Cloneable {
-    /**
-     * This is an interface that provides abstract methods for the Stacks, Queues and Deques
-     * Abstract Data Types.
-     */
-    void push(E element );
     /**
      * Adds element e to the top of the collection.
      */
+    void push(E element);
 
-    E pop();
     /**
      * Removes and returns the top element from the collection
      * or null if the collection is empty.
      */
+    E pop();
 
-    E top();
     /** Returns the top element of the collection, without removing it
      * or null if the stack is empty.
      */
+    E top();
 
     boolean isEmpty();
 
-    int size();
     /**
      * Returns the number of elements in the collection.
      */
+    int size();
 
     boolean equals(Object o);
 
     AbstractCollections<E> copy();
 
     AbstractCollections<E> clone() throws CloneNotSupportedException;
-
 }

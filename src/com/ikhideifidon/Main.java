@@ -1,70 +1,72 @@
 package com.ikhideifidon;
 
+import java.lang.management.ManagementFactory;
 import java.util.*;
+import static java.lang.System.out;
 
 public class Main {
 
     public static void main(String[] args) throws CloneNotSupportedException {
+        if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-ea")) {
+            out.println("Pass -ea to enable runtime assertions");
+            return;
+        }
+
+        stackTest();
+        intTest();
+        stringTest();
+    }
+
+    public static void stackTest() throws CloneNotSupportedException {
         Random rand = new Random();
         rand.setSeed(0);
         AbstractCollections<Integer> stacks = new ArrayStack<>(12);
         for (int i = 0; i <= 10; i++)
             stacks.push(rand.nextInt(50));
-        System.out.println(stacks);
+        out.println(stacks);
+        // Pass -ea as a VM option in your run configuration for these asserts to have an effect
+        assert stacks.equals(stacks);
 
         AbstractCollections<Integer> clonedStack = stacks.clone();
+        out.println(clonedStack);
+        assert stacks != clonedStack;
+        assert stacks.equals(clonedStack);
+        assert stacks.getClass() == clonedStack.getClass();
+        assert stacks.hashCode() == clonedStack.hashCode();
 
-
-        System.out.println(clonedStack.hashCode());
-        System.out.println(stacks.hashCode());
-//
-        System.out.println(stacks.equals(clonedStack));
-        System.out.println(stacks.equals(stacks));
-//        clonedStack.pop();
-//        clonedStack2.pop();
-//        stacks.pop();
-//
-//        clonedStack.pop();
-//        clonedStack2.pop();
-//        stacks.pop();
-//
-//        clonedStack.pop();
-//        clonedStack2.pop();
-//        stacks.pop();
-//
-//        System.out.println(clonedStack);
-//        System.out.println(clonedStack2);
-//        System.out.println(stacks);
-//        assert stacks.size() == clonedStack.size();
-
-        System.out.println(stacks);
-//        System.out.println(clonedStack2.pop());
-        System.out.println(clonedStack);
-        System.out.println(stacks.copy().hashCode());
-        System.out.println(stacks != stacks.copy());
-        System.out.println(stacks.getClass() == stacks.copy().getClass());
-        System.out.println(stacks.copy().equals(stacks));
-        assert stacks.hashCode() != stacks.copy().hashCode();
-
-        Map<Integer, String> map = new Hashtable<>();
-
-        int[] intArray = {1, 2, 3, 4, 5, 6, 7};
-        int[] intArrayCopied = Arrays.copyOf(intArray, intArray.length);
-        int[] intArrayCloned = intArray.clone();
-
-        System.out.println(Arrays.toString(intArrayCopied));
-        System.out.println(intArray.hashCode());
-        System.out.println(intArrayCopied != intArray);
-        System.out.println(intArrayCloned != intArray);
-
-        String[] stringArray = {"play", "sleep", "eat"};
-        String[] stringArrayCopied = Arrays.copyOf(stringArray, stringArray.length);
-        String[] stringArrayCloned = stringArray.clone();
-
-        System.out.println(stringArray != stringArrayCopied);
-        System.out.println(stringArray != stringArrayCloned);
-
+        AbstractCollections<Integer> copiedStack = stacks.copy();
+        out.println(copiedStack);
+        assert stacks != copiedStack;
+        assert stacks.equals(copiedStack);
+        assert stacks.getClass() == copiedStack.getClass();
+        assert stacks.hashCode() == copiedStack.hashCode();
     }
 
+    public static void intTest() {
+        int[] intArray = {1, 2, 3, 4, 5, 6, 7};
 
+        int[] intArrayCopied = Arrays.copyOf(intArray, intArray.length);
+        out.println(Arrays.toString(intArrayCopied));
+        assert intArrayCopied != intArray;
+        assert Arrays.equals(intArrayCopied, intArray);
+
+        int[] intArrayCloned = intArray.clone();
+        out.println(Arrays.toString(intArrayCloned));
+        assert intArrayCloned != intArray;
+        assert Arrays.equals(intArrayCloned, intArray);
+    }
+
+    public static void stringTest() {
+        String[] stringArray = {"play", "sleep", "eat"};
+
+        String[] stringArrayCopied = Arrays.copyOf(stringArray, stringArray.length);
+        out.println(Arrays.toString(stringArrayCopied));
+        assert stringArrayCopied != stringArray;
+        assert Arrays.equals(stringArrayCopied, stringArray);
+
+        String[] stringArrayCloned = stringArray.clone();
+        out.println(Arrays.toString(stringArray));
+        assert stringArrayCloned != stringArray;
+        assert Arrays.equals(stringArrayCloned, stringArray);
+    }
 }
