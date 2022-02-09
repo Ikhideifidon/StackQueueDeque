@@ -31,11 +31,6 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     }
 
     @Override
-    public boolean isEmpty() {
-        return singlyLinkedList.isEmpty();
-    }
-
-    @Override
     public int size() {
         return singlyLinkedList.size();
     }
@@ -85,7 +80,7 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

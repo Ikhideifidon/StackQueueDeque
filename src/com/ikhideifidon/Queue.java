@@ -2,7 +2,7 @@ package com.ikhideifidon;
 
 import java.util.Iterator;
 
-public class Queue<E extends Object & Comparable<E>> implements AbstractCollections<E> {
+public class Queue<E extends Object & Comparable<E>> implements Stacks<E> {
     @Override
     public void push(E element) {
         throw new UnsupportedOperationException();
@@ -29,12 +29,12 @@ public class Queue<E extends Object & Comparable<E>> implements AbstractCollecti
     }
 
     @Override
-    public AbstractCollections<E> copy() {
+    public Stacks<E> copy() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public AbstractCollections<E> clone() throws CloneNotSupportedException {
+    public Stacks<E> clone() throws CloneNotSupportedException {
         throw new UnsupportedOperationException();
     }
 

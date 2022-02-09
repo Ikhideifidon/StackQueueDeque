@@ -13,7 +13,7 @@ public class StackExercises {
      * @return A reversed array of type parameter
      */
     public static <E extends Object & Comparable<E>> E[] reverseArray(E[] array) {
-        AbstractCollections<E> arrayStack = new ArrayStack<>(array.length);
+        Stacks<E> arrayStack = new ArrayStack<>(array.length);
         for (E e : array) arrayStack.push(e);
         for (int i = 0; i < array.length; i++)
             array[i] = arrayStack.pop();
@@ -28,7 +28,7 @@ public class StackExercises {
     public static boolean isMatched(String expression) {
         final String open = "({[";
         final String close = ")}]";
-        AbstractCollections<Character> arrayStack = new ArrayStack<>();
+        Stacks<Character> arrayStack = new ArrayStack<>();
         for (char c : expression.toCharArray()) {
             if (open.indexOf(c) != -1)
                 arrayStack.push(c);
@@ -51,7 +51,7 @@ public class StackExercises {
      * @return boolean
      */
     public static boolean isHTMLMatched(String html) {
-        AbstractCollections<String> arrayStack = new ArrayStack<>();
+        Stacks<String> arrayStack = new ArrayStack<>();
         int j = html.indexOf('<');                  // The first '<' character
         while (j != -1) {
             int k = html.indexOf('>', j + 1);           // The first '>' character

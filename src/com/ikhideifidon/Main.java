@@ -20,21 +20,21 @@ public class Main {
     public static void stackTest() throws CloneNotSupportedException {
         Random rand = new Random();
         rand.setSeed(0);
-        AbstractCollections<Integer> stacks = new ArrayStack<>(12);
+        Stacks<Integer> stacks = new ArrayStack<>(12);
         for (int i = 0; i <= 10; i++)
             stacks.push(rand.nextInt(50));
         out.println(stacks);
         // Pass -ea as a VM option in your run configuration for these asserts to have an effect
         assert stacks.equals(stacks);
 
-        AbstractCollections<Integer> clonedStack = stacks.clone();
+        Stacks<Integer> clonedStack = stacks.clone();
         out.println(clonedStack);
         assert stacks != clonedStack;
         assert stacks.equals(clonedStack);
         assert stacks.getClass() == clonedStack.getClass();
         assert stacks.hashCode() == clonedStack.hashCode();
 
-        AbstractCollections<Integer> copiedStack = stacks.copy();
+        Stacks<Integer> copiedStack = stacks.copy();
         out.println(copiedStack);
         assert stacks != copiedStack;
         assert stacks.equals(copiedStack);
