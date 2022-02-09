@@ -4,7 +4,7 @@ package com.ikhideifidon;
 import java.util.Iterator;
 
 
-public class LinkedStack<E extends Object & Comparable<E>> extends SinglyLinkedList<E> implements AbstractCollections<E> {
+public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> {
     /**
      * An Adapter Design Pattern for Stacks using an instance of the already
      * existing SinglyLinkedList class.
@@ -41,27 +41,46 @@ public class LinkedStack<E extends Object & Comparable<E>> extends SinglyLinkedL
     }
 
     @Override
-    public AbstractCollections<E> copy() {
+    public Stacks<E> copy() {
         return null;
-    }
-
-    // The problem is here
-    @Override
-    public AbstractCollections<E> clone() throws CloneNotSupportedException {
-        return of();
-    }
-
-    private SinglyLinkedList<E> of() {
-        try {
-            return singlyLinkedList.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 
     @Override
     public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof LinkedStack otherLinkedStack))
+            return false;
+        if (otherLinkedStack.size() != this.size())
+            return false;
+        Stacks walkA = this.clone();
+        Stacks walkB = otherLinkedStack.clone();
+        while (!walkA.isEmpty()) {
+            if (!walkA.pop().equals(walkB.pop()))
+                return false;
+        }
         return true;
+    }
+
+    /**
+     * Stacks cloning using two stacks
+     * @return Stacks
+     */
+    @Override
+    public Stacks<E> clone() {
+        Stacks<E> clonedLinkedStack = new LinkedStack<>();
+        Stacks<E> temporaryLinkedStack = new LinkedStack<>();
+        try {
+            SinglyLinkedList<E> clonedSinglyLinkedList = singlyLinkedList.clone();
+            while (!clonedSinglyLinkedList.isEmpty())
+                temporaryLinkedStack.push(clonedSinglyLinkedList.removeFirst());
+
+            while (!temporaryLinkedStack.isEmpty())
+                clonedLinkedStack.push(temporaryLinkedStack.pop());
+            return clonedLinkedStack;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Object not Cloneable");
+        }
     }
 
     @Override
@@ -71,7 +90,31 @@ public class LinkedStack<E extends Object & Comparable<E>> extends SinglyLinkedL
 
     @Override
     public String toString() {
-        return singlyLinkedList.toString();
+        StringBuilder sb = new StringBuilder("[");
+        Stacks<E> temporaryStack = this.clone();
+        while (!temporaryStack.isEmpty()) {
+            sb.append(temporaryStack.pop());
+            if (temporaryStack.top() != null)
+                sb.append("--->");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    // hashCode method with lazily initialized cached hash code
+    private int hashCode;
+    @Override
+    public int hashCode() {
+        Stacks<E> clonedStack = this.clone();
+        int result = hashCode;
+        if (result == 0) {
+            while (!clonedStack.isEmpty()) {
+                result = 31 * result + (clonedStack.top() == null ? 0 : clonedStack.top().hashCode());
+                clonedStack.pop();
+            }
+            hashCode = result;
+        }
+        return result;
     }
 
 }
