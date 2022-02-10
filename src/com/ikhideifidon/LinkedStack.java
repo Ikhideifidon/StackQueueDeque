@@ -2,6 +2,7 @@ package com.ikhideifidon;
 
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
 public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> {
@@ -84,8 +85,33 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            SinglyLinkedList<E> clonedSinglyLinkedList;
+
+            {
+                try {
+                   clonedSinglyLinkedList = singlyLinkedList.clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                return (clonedSinglyLinkedList.first() != null);
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext())
+                    throw new NoSuchElementException();
+                E answer = clonedSinglyLinkedList.first();
+                clonedSinglyLinkedList.removeFirst();
+                return answer;
+            }
+        };
     }
 
     @Override
