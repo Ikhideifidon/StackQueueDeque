@@ -1,12 +1,15 @@
 package com.ikhideifidon;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * A Queue is a collection of objects that are inserted and removed according to the
  * First-In, First-Out (FIFO) principle.
  * @param <E>
  */
-public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E>, Cloneable {
-    private static final int CAPACITY = 10;
+public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
+    private static final int CAPACITY = 100;
     private E[] data;                       // A mutable Generic array used for storage
     private int f = 0;                      // index of the front element
     private int t = 0;                      // number of elements in the queue.
@@ -54,14 +57,17 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E>, C
         return answer;
     }
 
+    /**
+     * The copy method converts the circular array queue to linearised array queue.
+     * The return value of this method initializes the private f variable to zero.
+     * @return : Queue
+     */
     @Override
     public Queue<E> copy() {
         ArrayQueue<E> queue = new ArrayQueue<>(data.length);
-        int index = f;
         if (!isEmpty()) {
-            for (int i = 0; i < size(); i++) {
-                queue.enqueue(data[index]);
-                index = (index + 1) % data.length;
+            for (E e : this) {
+                queue.enqueue(e);
             }
         }
         return queue;
@@ -83,37 +89,65 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E>, C
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof ArrayQueue otherArrayQueue))
+        if (!(o instanceof ArrayQueue<?> otherArrayQueue))
             return false;
         if (otherArrayQueue.size() != size())
             return false;
-        ArrayQueue walkA = this.clone();
-        ArrayQueue walkB = otherArrayQueue.clone();
-        while(!walkA.isEmpty()) {
-            if (!walkA.first().equals(walkB.first()))
+        Iterator<?> walkA = this.iterator();
+        Iterator<?> walkB = otherArrayQueue.iterator();
+        while(walkA.hasNext()) {
+            if (!walkA.next().equals(walkB.next()))
                 return false;
-            walkA.dequeue();
-            walkB.dequeue();
         }
         return true;
     }
 
+    // hashCode method with lazily initialized cached hash code
+    private int hashCode;
     @Override
     public int hashCode() {
-        return 0;
+        int result = hashCode;
+        if (result == 0) {
+            Iterator<E> iter = this.iterator();
+            while (iter.hasNext()) {
+                result = 31 * result + (iter.next() == null ? 0 : iter.next().hashCode());
+            }
+            hashCode = result;
+        }
+        return result;
     }
 
     @Override
     public String toString() {
-        int index = f;
         StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < size(); i++) {
-            sb.append(data[index]);
-            index = (index + 1) % data.length;
-            if (i < size() - 1)
+        Iterator<E> iter = this.iterator();
+       while (iter.hasNext()) {
+            sb.append(iter.next());
+            if (iter.hasNext())
                 sb.append("<----");
         }
         sb.append("]");
         return sb.toString();
+    }
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<>() {
+            int index = f;
+            int counter = 0;
+            @Override
+            public boolean hasNext() {
+                return (counter != size());
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext())
+                    throw new NoSuchElementException();
+                counter++;
+                E answer = data[index];
+                index = (index + 1) % data.length;
+                return answer;
+            }
+        };
     }
 }

@@ -1,6 +1,6 @@
 package com.ikhideifidon;
 
-public interface Queue<E> {
+public interface Queue<E> extends Iterable<E>, Cloneable {
     /** Returns the number of elements in the queue. */
     int size();
 

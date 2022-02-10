@@ -50,12 +50,12 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof LinkedStack otherLinkedStack))
+        if (!(o instanceof LinkedStack<?> otherLinkedStack))
             return false;
         if (otherLinkedStack.size() != this.size())
             return false;
-        Stacks walkA = this.clone();
-        Stacks walkB = otherLinkedStack.clone();
+        Stacks<?> walkA = this.clone();
+        Stacks<?> walkB = otherLinkedStack.clone();
         while (!walkA.isEmpty()) {
             if (!walkA.pop().equals(walkB.pop()))
                 return false;
@@ -85,42 +85,12 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Iterator<E> iterator() {
-        return new Iterator<E>() {
-            SinglyLinkedList<E> clonedSinglyLinkedList;
-
-            {
-                try {
-                   clonedSinglyLinkedList = singlyLinkedList.clone();
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public boolean hasNext() {
-                return (clonedSinglyLinkedList.first() != null);
-            }
-
-            @Override
-            public E next() {
-                if (!hasNext())
-                    throw new NoSuchElementException();
-                E answer = clonedSinglyLinkedList.first();
-                clonedSinglyLinkedList.removeFirst();
-                return answer;
-            }
-        };
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
-        Stacks<E> temporaryStack = this.clone();
-        while (!temporaryStack.isEmpty()) {
-            sb.append(temporaryStack.pop());
-            if (temporaryStack.top() != null)
+        Iterator<E> iter = singlyLinkedList.iterator();
+        while (iter.hasNext()) {
+            sb.append(iter.next());
+            if (iter.hasNext())
                 sb.append("--->");
         }
         sb.append("]");
@@ -131,16 +101,20 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     private int hashCode;
     @Override
     public int hashCode() {
-        Stacks<E> clonedStack = this.clone();
         int result = hashCode;
         if (result == 0) {
-            while (!clonedStack.isEmpty()) {
-                result = 31 * result + (clonedStack.top() == null ? 0 : clonedStack.top().hashCode());
-                clonedStack.pop();
-            }
+            Iterator<E> iter = singlyLinkedList.iterator();
+            while (iter.hasNext())
+                result = 31 * result + (iter.next() == null ? 0 : iter.next().hashCode());
             hashCode = result;
         }
         return result;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterator<E> iterator() {
+        return singlyLinkedList.iterator();
     }
 
 }

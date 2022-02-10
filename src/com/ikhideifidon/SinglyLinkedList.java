@@ -233,6 +233,8 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
 
     @SuppressWarnings({ "rawtypes" })
     public boolean equals(Object o) {
+        if (o == this)
+            return true;
         if (o instanceof SinglyLinkedList other) {
             if (this.currentSize != other.currentSize)
                 return false;

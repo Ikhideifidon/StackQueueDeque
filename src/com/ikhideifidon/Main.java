@@ -100,7 +100,7 @@ public class Main {
     }
 
     public static void arrayQueue() throws CloneNotSupportedException {
-        Queue<Integer> queue = new ArrayQueue<>(20);
+        Queue<Integer> queue = new ArrayQueue<>();
 //        Random rand = new Random();
 //        rand.setSeed(System.currentTimeMillis());
 //        for (int i = 0; i <= 10; i++)
@@ -112,6 +112,7 @@ public class Main {
         queue.dequeue();
         queue.enqueue(29);
         queue.enqueue(47);
+        queue.dequeue();
         queue.enqueue(15);
         queue.dequeue();
         queue.enqueue(3);
@@ -122,28 +123,45 @@ public class Main {
         queue.enqueue(4);
         queue.enqueue(27);
         queue.dequeue();
-
-
-
-        Queue<Integer> clonedQueue = queue.clone();
-        Queue<Integer> copiedQueue = queue.copy();
-
-        out.println("This is the original queue: " + queue);
-        out.println(clonedQueue);
-        out.println(copiedQueue);
-        out.println(queue.equals(clonedQueue));
-        out.println(queue.equals(copiedQueue));
-        out.println(queue.equals(clonedQueue));
-        out.println(queue.equals(copiedQueue));
         queue.dequeue();
-        clonedQueue.dequeue();
-        copiedQueue.dequeue();
+        queue.enqueue(100);
+        queue.enqueue(4500);
+        queue.enqueue(200);
+        queue.enqueue(300);
+        queue.enqueue(400);
+        queue.enqueue(500);
+        queue.dequeue();
+        queue.enqueue(600);
+
+
+
+
+//        Queue<Integer> clonedQueue = queue.clone();
+//        Queue<Integer> copiedQueue = queue.copy();
+//
+//        out.println("This is the original queue: " + queue);
+//        out.println(clonedQueue);
+//        out.println(copiedQueue);
+//        out.println(queue.equals(clonedQueue));
+//        out.println(queue.equals(copiedQueue));
+//        out.println(queue.equals(clonedQueue));
+//        out.println(queue.equals(copiedQueue));
+//        clonedQueue.dequeue();
+//        copiedQueue.dequeue();
+//        out.println(queue);
+//        out.println(clonedQueue);
+//        out.println(copiedQueue);
+//        assert queue.equals(clonedQueue);
+//        assert queue.equals(copiedQueue);
+//        assert clonedQueue.equals(copiedQueue);
+//        out.println(queue.hashCode() == clonedQueue.hashCode());
+//        out.println(queue.hashCode() == copiedQueue.hashCode());
+//        out.println(queue);
+        out.println("ForEach loop starts here");
         out.println(queue);
-        out.println(clonedQueue);
-        out.println(copiedQueue);
-        assert queue.equals(clonedQueue);
-        assert queue.equals(copiedQueue);
-        assert clonedQueue.equals(copiedQueue);
+        out.println(queue.copy());
+        for (Integer integer : queue)
+            out.println(integer);
 
 
     }
@@ -207,6 +225,7 @@ public class Main {
         intList[3] = 0;
         out.println();
         out.println(intList.hashCode());
+
 
     }
 
