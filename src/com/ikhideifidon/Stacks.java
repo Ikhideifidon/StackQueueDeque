@@ -4,7 +4,7 @@ package com.ikhideifidon;
  * This is an interface that provides abstract methods for the Stacks, Queues and Deques
  * Abstract Data Types.
  */
-public interface AbstractCollections<E> extends Iterable<E>, Cloneable {
+public interface Stacks<E> extends Iterable<E>, Cloneable {
     /**
      * Adds element e to the top of the collection.
      */
@@ -28,9 +28,13 @@ public interface AbstractCollections<E> extends Iterable<E>, Cloneable {
      */
     int size();
 
+    Stacks<E> copy();
+
     boolean equals(Object o);
 
-    AbstractCollections<E> copy();
+    Stacks<E> clone() throws CloneNotSupportedException;
 
-    AbstractCollections<E> clone() throws CloneNotSupportedException;
+    String toString();
+
+    int hashCode();
 }
