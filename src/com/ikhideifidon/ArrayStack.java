@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
  * A Stack is a collection of objects that are inserted and removed according to the Last-In,
  * First-Out (LIFO) principle.
  */
-public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCollections<E> {
+public class ArrayStack<E extends Object & Comparable<E>> implements Stacks<E> {
 
     public static final int CAPACITY = 1000;            // Default array capacity.
     private E[] data;                                   // Generic array used for storage.
@@ -108,8 +108,8 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
     public int hashCode() {
         int result = 1;
 
-        for (Object element : data)
-            result = 31 * result + (element == null ? 0 : element.hashCode());
+     for (int i = 0; i < size(); i++)
+        result = 31 * result + (data[i] == null ? 0 : data[i].hashCode());
 
         return result;
     }
@@ -134,7 +134,7 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
      */
     @Override
     @SuppressWarnings("unchecked")
-    public AbstractCollections<E> clone() {
+    public Stacks<E> clone() {
         try {
             ArrayStack<E> result = (ArrayStack<E>) super.clone();
             result.data = data.clone();
@@ -144,8 +144,8 @@ public class ArrayStack<E extends Object & Comparable<E>> implements AbstractCol
         }
     }
 
-    public AbstractCollections<E> copy() {
-        AbstractCollections<E> other = new ArrayStack<>(this.size());
+    public Stacks<E> copy() {
+        Stacks<E> other = new ArrayStack<>(this.size());
         if (!isEmpty()) {
             int index = 0;
             while (index < size()) {
