@@ -1,45 +1,35 @@
 package com.ikhideifidon;
 
-import java.util.Iterator;
+public interface Queue<E> {
+    /** Returns the number of elements in the queue. */
+    int size();
 
-public class Queue<E extends Object & Comparable<E>> implements AbstractCollections<E> {
-    @Override
-    public void push(E element) {
-        throw new UnsupportedOperationException();
-    }
+    /** Tests whether the queue is empty. */
+    boolean isEmpty();
 
-    @Override
-    public E pop() {
-        throw new UnsupportedOperationException();
-    }
+    /** Inserts an element at the rear of the queue. */
+    void enqueue(E element);
 
-    @Override
-    public E top() {
-        throw new UnsupportedOperationException();
-    }
+    /** Returns, but does not remove the first element of the queue (null if empty). */
+    E first();
 
-    @Override
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException();
-    }
+    /** Removes and return the first element of the queue (null if empty). */
+    E dequeue();
 
-    @Override
-    public int size() {
-        throw new UnsupportedOperationException();
-    }
+    /** Returns a copy of the queue (null if empty). */
+    Queue<E> copy();
 
-    @Override
-    public AbstractCollections<E> copy() {
-        throw new UnsupportedOperationException();
-    }
+    // Objects methods
+    /** Returns a cloned copy of the queue (null if empty). */
+    Queue<E> clone() throws CloneNotSupportedException;
 
-    @Override
-    public AbstractCollections<E> clone() throws CloneNotSupportedException {
-        throw new UnsupportedOperationException();
-    }
+    /** Tests for equality of two queues. */
+    boolean equals(Object o);
 
-    @Override
-    public Iterator<E> iterator() {
-        throw new UnsupportedOperationException();
-    }
+    /** HashCode implementation */
+    int hashCode();
+
+    /** String representation of queue. */
+    String toString();
+
 }
