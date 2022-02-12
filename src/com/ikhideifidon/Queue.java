@@ -1,6 +1,6 @@
 package com.ikhideifidon;
 
-public interface Queue<E> extends Iterable<E>, Cloneable {
+public interface Queue<E extends Comparable<E>> extends Iterable<E>, Cloneable {
     /** Returns the number of elements in the queue. */
     int size();
 
@@ -18,6 +18,31 @@ public interface Queue<E> extends Iterable<E>, Cloneable {
 
     /** Returns a copy of the queue (null if empty). */
     Queue<E> copy();
+
+    default boolean contains(E element) {
+        if (element == null) {
+            for (E e : this) {
+                if (e == null)
+                    return true;
+            }
+        } else {
+            for (E e : this) {
+                if (e.compareTo(element) == 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    default boolean containsAll(Queue<E> queueCollection) {
+        if (queueCollection.size() > size())
+            return false;
+        for (E e : queueCollection) {
+            if (!contains(e))
+                return false;
+        }
+        return true;
+    }
 
     // Objects methods
     /** Returns a cloned copy of the queue (null if empty). */
