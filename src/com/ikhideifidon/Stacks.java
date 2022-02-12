@@ -1,10 +1,12 @@
 package com.ikhideifidon;
 
+import java.util.Iterator;
+
 /**
  * This is an interface that provides abstract methods for the Stacks, Queues and Deques
  * Abstract Data Types.
  */
-public interface Stacks<E> extends Iterable<E>, Cloneable {
+public interface Stacks<E extends Comparable<E>> extends Iterable<E>, Cloneable {
     /**
      * Adds element e to the top of the collection.
      */
@@ -28,7 +30,7 @@ public interface Stacks<E> extends Iterable<E>, Cloneable {
      */
     int size();
 
-    Stacks<E> copy();
+    Stacks<E> copy() throws CloneNotSupportedException;
 
     boolean equals(Object o);
 
@@ -37,4 +39,30 @@ public interface Stacks<E> extends Iterable<E>, Cloneable {
     String toString();
 
     int hashCode();
+
+    default boolean contains(E element) {
+        if (element == null) {
+            for (E e : this) {
+                if (e == null)
+                    return true;
+            }
+        } else {
+            for (E e : this) {
+                if (e.compareTo(element) == 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    default boolean containsAll(Stacks<E> queueCollection) {
+        if (queueCollection.size() > size())
+            return false;
+        for (E e : queueCollection) {
+            if (!contains(e))
+                return false;
+        }
+        return true;
+    }
+
 }
