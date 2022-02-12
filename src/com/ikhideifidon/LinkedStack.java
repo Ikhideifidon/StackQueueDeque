@@ -45,7 +45,7 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
      * @return : Stacks
      */
     @Override
-    public Stacks<E> copy() {
+    public Stacks<E> copy() throws CloneNotSupportedException {
         return clone();
     }
 
@@ -70,17 +70,13 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
      * @return Stacks
      */
     @Override
-    public Stacks<E> clone() {
+    public Stacks<E> clone() throws CloneNotSupportedException {
         Stacks<E> clonedLinkedStack = new LinkedStack<>();
-        try {
-            SinglyLinkedList<E> clonedSinglyLinkedList = singlyLinkedList.clone();
-            clonedSinglyLinkedList.reverse();
+        SinglyLinkedList<E> clonedSinglyLinkedList = singlyLinkedList.clone();
+        clonedSinglyLinkedList.reverse();
             while (!clonedSinglyLinkedList.isEmpty())
                 clonedLinkedStack.push(clonedSinglyLinkedList.removeFirst());
             return clonedLinkedStack;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("Object not Cloneable");
-        }
     }
 
     @Override
