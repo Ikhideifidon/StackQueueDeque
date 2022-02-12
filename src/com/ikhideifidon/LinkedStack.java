@@ -2,15 +2,14 @@ package com.ikhideifidon;
 
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
-
+/**
+ * An Adapter Design Pattern for Stacks using an instance of the already
+ * existing SinglyLinkedList class.
+ */
 public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> {
-    /**
-     * An Adapter Design Pattern for Stacks using an instance of the already
-     * existing SinglyLinkedList class.
-     */
-    private SinglyLinkedList<E> singlyLinkedList;
+
+    private final SinglyLinkedList<E> singlyLinkedList;
 
     public LinkedStack() {
         singlyLinkedList = new SinglyLinkedList<>();                // An empty linked list is initialized when an instance of LinkedList is created.
@@ -41,9 +40,13 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
         return singlyLinkedList.size();
     }
 
+    /**
+     * The copy method here is equivalent to the implemented clone method.
+     * @return : Stacks
+     */
     @Override
     public Stacks<E> copy() {
-        return null;
+        return clone();
     }
 
     @Override
@@ -54,30 +57,26 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
             return false;
         if (otherLinkedStack.size() != this.size())
             return false;
-        Stacks<?> walkA = this.clone();
-        Stacks<?> walkB = otherLinkedStack.clone();
-        while (!walkA.isEmpty()) {
-            if (!walkA.pop().equals(walkB.pop()))
+        Iterator<?> walkB = otherLinkedStack.iterator();
+        for (E e : this) {
+            if (!e.equals(walkB.next()))
                 return false;
         }
         return true;
     }
 
     /**
-     * Stacks cloning using two stacks
+     * Stacks cloning using a single stack and a reverse method.
      * @return Stacks
      */
     @Override
     public Stacks<E> clone() {
         Stacks<E> clonedLinkedStack = new LinkedStack<>();
-        Stacks<E> temporaryLinkedStack = new LinkedStack<>();
         try {
             SinglyLinkedList<E> clonedSinglyLinkedList = singlyLinkedList.clone();
+            clonedSinglyLinkedList.reverse();
             while (!clonedSinglyLinkedList.isEmpty())
-                temporaryLinkedStack.push(clonedSinglyLinkedList.removeFirst());
-
-            while (!temporaryLinkedStack.isEmpty())
-                clonedLinkedStack.push(temporaryLinkedStack.pop());
+                clonedLinkedStack.push(clonedSinglyLinkedList.removeFirst());
             return clonedLinkedStack;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError("Object not Cloneable");
@@ -97,22 +96,21 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
         return sb.toString();
     }
 
-    // hashCode method with lazily initialized cached hash code
+    /**
+     * HashCode method with lazily initialized cached hash code
+     */
     private int hashCode;
     @Override
     public int hashCode() {
         int result = hashCode;
         if (result == 0) {
-            Iterator<E> iter = singlyLinkedList.iterator();
-            while (iter.hasNext())
-                result = 31 * result + (iter.next() == null ? 0 : iter.next().hashCode());
+            result = singlyLinkedList.hashCode();
             hashCode = result;
         }
         return result;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Iterator<E> iterator() {
         return singlyLinkedList.iterator();
     }

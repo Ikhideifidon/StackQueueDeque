@@ -12,13 +12,13 @@ public class Main {
             return;
         }
 
-        stackTest();
-        intTest();
-        stringTest();
-        linkedListTest();
-        arrayTest();
+//        stackTest();
+//        intTest();
+//        stringTest();
+//        linkedListTest();
+//        arrayTest();
         arrayQueue();
-        linkedStackTest();
+//        linkedStackTest();
     }
 
     public static void stackTest() throws CloneNotSupportedException {
@@ -136,27 +136,25 @@ public class Main {
 
 
 
-//        Queue<Integer> clonedQueue = queue.clone();
-//        Queue<Integer> copiedQueue = queue.copy();
-//
-//        out.println("This is the original queue: " + queue);
-//        out.println(clonedQueue);
-//        out.println(copiedQueue);
-//        out.println(queue.equals(clonedQueue));
-//        out.println(queue.equals(copiedQueue));
-//        out.println(queue.equals(clonedQueue));
-//        out.println(queue.equals(copiedQueue));
-//        clonedQueue.dequeue();
-//        copiedQueue.dequeue();
-//        out.println(queue);
-//        out.println(clonedQueue);
-//        out.println(copiedQueue);
-//        assert queue.equals(clonedQueue);
-//        assert queue.equals(copiedQueue);
-//        assert clonedQueue.equals(copiedQueue);
-//        out.println(queue.hashCode() == clonedQueue.hashCode());
-//        out.println(queue.hashCode() == copiedQueue.hashCode());
-//        out.println(queue);
+        Queue<Integer> clonedQueue = queue.clone();
+        Queue<Integer> copiedQueue = queue.copy();
+
+        out.println("This is the original queue: " + queue);
+        out.println(clonedQueue);
+        out.println(copiedQueue);
+        out.println(queue.equals(clonedQueue));
+        out.println(queue.equals(copiedQueue));
+        out.println(queue.equals(clonedQueue));
+        out.println(queue.equals(copiedQueue));
+        out.println(queue);
+        out.println(clonedQueue);
+        out.println(copiedQueue);
+        assert queue.equals(clonedQueue);
+        assert queue.equals(copiedQueue);
+        assert clonedQueue.equals(copiedQueue);
+        out.println(queue.hashCode());
+        out.println(queue.hashCode() == copiedQueue.hashCode());
+        out.println(queue);
         out.println("ForEach loop starts here");
         out.println(queue);
         out.println(queue.copy());
@@ -187,6 +185,8 @@ public class Main {
 
         Stacks<Integer> clonedLinkedStack = linkedStack.clone();
         out.println(clonedLinkedStack);
+        linkedStack.pop();
+        out.println(clonedLinkedStack);
         out.println(linkedStack.equals(clonedLinkedStack));
         out.println(linkedStack != clonedLinkedStack);
         out.println(clonedLinkedStack.equals(clonedLinkedStack));
@@ -207,8 +207,8 @@ public class Main {
         out.println(clonedLinkedStack.equals(testLinkedStack));
         out.println(linkedStack.hashCode());
         out.println(clonedLinkedStack.hashCode());
-        assert linkedStack.hashCode() == clonedLinkedStack.hashCode();
-        assert linkedStack.hashCode() == testLinkedStack.hashCode();
+//        assert linkedStack.hashCode() == clonedLinkedStack.hashCode();
+//        assert linkedStack.hashCode() == testLinkedStack.hashCode();
 
         List<Integer> list = new ArrayList<>(12);
         list.add(1);

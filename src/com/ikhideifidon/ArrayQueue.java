@@ -42,14 +42,14 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
     @Override
     public E first() {
         if (isEmpty())
-            return null;
+            throw new NullPointerException();
         return data[f];
     }
 
     @Override
     public E dequeue() {
         if (isEmpty())
-            return null;
+            throw new NullPointerException();
         E answer = data[f];
         data[f] = null;                         // Java garbage collection.
         f = (f + 1) % data.length;
@@ -65,24 +65,17 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
     @Override
     public Queue<E> copy() {
         ArrayQueue<E> queue = new ArrayQueue<>(data.length);
-        if (!isEmpty()) {
-            for (E e : this) {
-                queue.enqueue(e);
-            }
-        }
+        for (E e : this)
+            queue.enqueue(e);
         return queue;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public ArrayQueue<E> clone() {
-        try {
-            ArrayQueue<E> clonedQueue = (ArrayQueue<E>) super.clone();
-            clonedQueue.data = data.clone();
-            return clonedQueue;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public ArrayQueue<E> clone() throws CloneNotSupportedException {
+        ArrayQueue<E> clonedQueue = (ArrayQueue<E>) super.clone();
+        clonedQueue.data = data.clone();
+        return clonedQueue;
     }
 
     @Override
@@ -93,25 +86,24 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
             return false;
         if (otherArrayQueue.size() != size())
             return false;
-        Iterator<?> walkA = this.iterator();
         Iterator<?> walkB = otherArrayQueue.iterator();
-        while(walkA.hasNext()) {
-            if (!walkA.next().equals(walkB.next()))
+        for (E e : this) {
+            if (!e.equals(walkB.next()))
                 return false;
         }
         return true;
     }
 
-    // hashCode method with lazily initialized cached hash code
+    /**
+     * HashCode method with lazily initialized cached hash code
+     */
     private int hashCode;
     @Override
     public int hashCode() {
         int result = hashCode;
         if (result == 0) {
-            Iterator<E> iter = this.iterator();
-            while (iter.hasNext()) {
-                result = 31 * result + (iter.next() == null ? 0 : iter.next().hashCode());
-            }
+            for (E e : this)
+                result = 31 * result + (e == null ? 0 : e.hashCode());
             hashCode = result;
         }
         return result;
@@ -121,7 +113,7 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
         Iterator<E> iter = this.iterator();
-       while (iter.hasNext()) {
+        while (iter.hasNext()) {
             sb.append(iter.next());
             if (iter.hasNext())
                 sb.append("<----");

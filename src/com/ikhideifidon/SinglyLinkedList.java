@@ -231,15 +231,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         return other;
     }
 
-    @SuppressWarnings({ "rawtypes" })
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (o instanceof SinglyLinkedList other) {
+        if (o instanceof SinglyLinkedList<?> other) {
             if (this.currentSize != other.currentSize)
                 return false;
-            Node walkA = head;
-            Node walkB = other.head;
+            Node<?> walkA = head;
+            Node<?> walkB = other.head;
             while (walkA != null) {
                 if (!walkA.getData().equals(walkB.getData()))           //mismatch
                     return false;
@@ -249,6 +248,21 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
             return true;
         }
         return false;
+    }
+
+    private int hashCode;
+    @Override
+    public int hashCode() {
+        int result = hashCode;
+        if (result == 0) {
+            Node<E> current = head;
+            while (current != null) {
+                result = 31 * result + (current.getData() == null ? 0 : current.getData().hashCode());
+                current = current.getNext();
+            }
+            hashCode = result;
+        }
+        return result;
     }
 
     /**

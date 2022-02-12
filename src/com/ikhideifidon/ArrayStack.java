@@ -74,24 +74,10 @@ public class ArrayStack<E extends Object & Comparable<E>> implements Stacks<E> {
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        int index = t - 1;
-        while (index >= 0) {
-            sb.append(data[index]);
-            if (index > 0)
-                sb.append("---");
-            index--;
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o == this)              // If they point to the same object return true.
             return true;
-        if (!(o instanceof ArrayStack otherArrayStack))
+        if (!(o instanceof ArrayStack<?> otherArrayStack))
             return false;
         if (this.size() != otherArrayStack.size())
             return false;
@@ -155,4 +141,19 @@ public class ArrayStack<E extends Object & Comparable<E>> implements Stacks<E> {
         }
         return other;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        int index = t - 1;
+        while (index >= 0) {
+            sb.append(data[index]);
+            if (index > 0)
+                sb.append("---");
+            index--;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 }
