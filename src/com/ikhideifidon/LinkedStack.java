@@ -15,6 +15,10 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
         singlyLinkedList = new SinglyLinkedList<>();                // An empty linked list is initialized when an instance of LinkedList is created.
     }
 
+    public LinkedStack(LinkedStack<E> that) {
+        this.singlyLinkedList = new SinglyLinkedList<>(that.singlyLinkedList);
+    }
+
     @Override
     public void push(E element) {
         singlyLinkedList.addFirst(element);
@@ -31,11 +35,6 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     }
 
     @Override
-    public boolean isEmpty() {
-        return singlyLinkedList.isEmpty();
-    }
-
-    @Override
     public int size() {
         return singlyLinkedList.size();
     }
@@ -45,8 +44,8 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
      * @return : Stacks
      */
     @Override
-    public Stacks<E> copy() throws CloneNotSupportedException {
-        return clone();
+    public Stacks<E> copy() {
+        return new LinkedStack<>(this);
     }
 
     @Override
@@ -74,9 +73,9 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
         Stacks<E> clonedLinkedStack = new LinkedStack<>();
         SinglyLinkedList<E> clonedSinglyLinkedList = singlyLinkedList.clone();
         clonedSinglyLinkedList.reverse();
-            while (!clonedSinglyLinkedList.isEmpty())
-                clonedLinkedStack.push(clonedSinglyLinkedList.removeFirst());
-            return clonedLinkedStack;
+        while (!clonedSinglyLinkedList.isEmpty())
+            clonedLinkedStack.push(clonedSinglyLinkedList.removeFirst());
+        return clonedLinkedStack;
     }
 
     @Override
