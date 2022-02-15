@@ -1,5 +1,6 @@
 package com.ikhideifidon;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -20,19 +21,20 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
         data = (E[]) new Object[capacity];
     }
 
+    public ArrayQueue(ArrayQueue<E> that) {
+        this.f = that.f;
+        this.t = that.t;
+        this.data = Arrays.copyOf(that.data, that.data.length);
+    }
+
     @Override
     public int size() {
         return t;
     }
 
     @Override
-    public boolean isEmpty() {
-        return size() == 0;
-    }
-
-    @Override
     public void enqueue(E element) {
-        if (size() == data.length)
+        if (size() >= data.length)
             throw new IllegalStateException("Queue is full");
         int available = (f + t) % data.length;
         data[available] = element;
@@ -40,9 +42,9 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
     }
 
     @Override
-    public E first() {
+    public E first() throws EmptyArrayQueueException {
         if (isEmpty())
-            throw new NullPointerException();
+            throw new EmptyArrayQueueException();
         return data[f];
     }
 
@@ -64,10 +66,7 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
      */
     @Override
     public Queue<E> copy() {
-        ArrayQueue<E> queue = new ArrayQueue<>(data.length);
-        for (E e : this)
-            queue.enqueue(e);
-        return queue;
+        return new ArrayQueue<>(this);
     }
 
     @Override
@@ -128,7 +127,7 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
             int counter = 0;
             @Override
             public boolean hasNext() {
-                return (counter != size());
+                return counter != size();
             }
 
             @Override
