@@ -1,5 +1,6 @@
 package com.ikhideifidon;
 
+import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -22,15 +23,17 @@ public class ArrayStack<E extends Object & Comparable<E>> implements Stacks<E> {
         data = (E[]) new Object[capacity];
     }
 
+    public ArrayStack(ArrayStack<E> that) {
+        this.t = that.t;
+        this.data = Arrays.copyOf(that.data, that.data.length);
+    }
+
     @Override
     public int size() { return t; }
 
     @Override
-    public boolean isEmpty() { return t == 0;}
-
-    @Override
     public void push(E element) throws IllegalStateException {
-        if (size() == data.length)
+        if (size() >= data.length)
             throw new IllegalStateException("Stack is full");
         data[t] = element;
         t++;
@@ -81,25 +84,12 @@ public class ArrayStack<E extends Object & Comparable<E>> implements Stacks<E> {
             return false;
         if (this.size() != otherArrayStack.size())
             return false;
-        int i = size() - 1;
-        while (i >= 0) {
+        for (int i = size() - 1; i >= 0; i--) {
             if (!this.data[i].equals(otherArrayStack.data[i]))
                 return false;
-            i--;
         }
         return true;
     }
-
-    /**
-    public int hashCode() {
-        int result = 1;
-
-     for (int i = 0; i < size(); i++)
-        result = 31 * result + (data[i] == null ? 0 : data[i].hashCode());
-
-        return result;
-    }
-    */
 
     // hashCode method with lazily initialized cached hash code
     private int hashCode;                   // Automatically initialized to 0
@@ -120,26 +110,14 @@ public class ArrayStack<E extends Object & Comparable<E>> implements Stacks<E> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Stacks<E> clone() {
-        try {
-            ArrayStack<E> result = (ArrayStack<E>) super.clone();
-            result.data = data.clone();
-            return result;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public Stacks<E> clone() throws CloneNotSupportedException {
+        ArrayStack<E> result = (ArrayStack<E>) super.clone();
+        result.data = data.clone();
+        return result;
     }
 
     public Stacks<E> copy() {
-        Stacks<E> other = new ArrayStack<>(this.size());
-        if (!isEmpty()) {
-            int index = 0;
-            while (index < size()) {
-                other.push(data[index]);
-                index++;
-            }
-        }
-        return other;
+        return new ArrayStack<>(this);
     }
 
     @Override
