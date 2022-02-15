@@ -1,7 +1,5 @@
 package com.ikhideifidon;
 
-import java.util.Iterator;
-
 /**
  * This is an interface that provides abstract methods for the Stacks, Queues and Deques
  * Abstract Data Types.
@@ -23,8 +21,6 @@ public interface Stacks<E extends Comparable<E>> extends Iterable<E>, Cloneable 
      */
     E top();
 
-    boolean isEmpty();
-
     /**
      * Returns the number of elements in the collection.
      */
@@ -39,6 +35,8 @@ public interface Stacks<E extends Comparable<E>> extends Iterable<E>, Cloneable 
     String toString();
 
     int hashCode();
+
+    default boolean isEmpty() { return size() == 0;}
 
     default boolean contains(E element) {
         if (element == null) {
