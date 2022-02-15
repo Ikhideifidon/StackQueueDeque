@@ -4,14 +4,11 @@ public interface Queue<E extends Comparable<E>> extends Iterable<E>, Cloneable {
     /** Returns the number of elements in the queue. */
     int size();
 
-    /** Tests whether the queue is empty. */
-    boolean isEmpty();
-
     /** Inserts an element at the rear of the queue. */
     void enqueue(E element);
 
     /** Returns, but does not remove the first element of the queue (null if empty). */
-    E first();
+    E first() throws EmptyArrayQueueException;
 
     /** Removes and return the first element of the queue (null if empty). */
     E dequeue();
@@ -32,6 +29,11 @@ public interface Queue<E extends Comparable<E>> extends Iterable<E>, Cloneable {
             }
         }
         return false;
+    }
+
+    /** Tests whether the queue is empty. */
+    default boolean isEmpty() {
+        return size() == 0;
     }
 
     default boolean containsAll(Queue<E> queueCollection) {
