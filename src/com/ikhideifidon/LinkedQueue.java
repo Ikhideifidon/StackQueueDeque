@@ -10,11 +10,16 @@ import java.util.Iterator;
  */
 public class LinkedQueue<E extends Object & Comparable<E>> implements Queue<E> {
 
-    // A final non-static class variable.
+    // A non-static final class variable.
     private final SinglyLinkedList<E> singlyLinkedList;
 
     public LinkedQueue() {
         singlyLinkedList = new SinglyLinkedList<>();
+    }
+
+    public LinkedQueue(LinkedQueue<E> that) {
+        this.singlyLinkedList = new SinglyLinkedList<>(that.singlyLinkedList);
+
     }
 
     @Override
@@ -43,8 +48,8 @@ public class LinkedQueue<E extends Object & Comparable<E>> implements Queue<E> {
     }
 
     @Override
-    public Queue<E> copy() {
-        return null;
+    public LinkedQueue<E> copy() {
+        return new LinkedQueue<>(this);
     }
 
     @Override
@@ -59,5 +64,18 @@ public class LinkedQueue<E extends Object & Comparable<E>> implements Queue<E> {
     @Override
     public Iterator<E> iterator() {
         return singlyLinkedList.iterator();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        Iterator<E> iter = this.iterator();
+        while (iter.hasNext()) {
+            sb.append(iter.next());
+            if (iter.hasNext())
+                sb.append("<---");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
