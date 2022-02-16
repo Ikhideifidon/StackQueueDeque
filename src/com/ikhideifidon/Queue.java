@@ -8,10 +8,10 @@ public interface Queue<E extends Comparable<E>> extends Iterable<E>, Cloneable {
     void enqueue(E element);
 
     /** Returns, but does not remove the first element of the queue (null if empty). */
-    E first() throws EmptyArrayQueueException;
+    E first() throws EmptyArrayQueueException, EmptyLinkedListException;
 
     /** Removes and return the first element of the queue (null if empty). */
-    E dequeue();
+    E dequeue() throws EmptyArrayQueueException, EmptyLinkedListException;
 
     /** Returns a copy of the queue (null if empty). */
     Queue<E> copy();
