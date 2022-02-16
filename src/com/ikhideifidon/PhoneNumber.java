@@ -26,22 +26,6 @@ public final class PhoneNumber {
         return areaCode == other.areaCode && prefix == other.prefix && lineNum == other.lineNum;
     }
 
-    /**
-     * hashCode method with lazily initialized cached hash code
-    private int hashCode;                   // Automatically initialized to 0
-
-    public int hashCode() {
-        int result = hashCode;
-        if (result == 0) {
-            result = Short.hashCode(areaCode);
-            result = 31 * result + Short.hashCode(prefix);
-            result = 31 * result + Short.hashCode(lineNum);
-            hashCode = result;
-        }
-        return result;
-    }
-     */
-
     @Override
     public int hashCode() {
         int result = Short.hashCode(areaCode);
@@ -52,12 +36,8 @@ public final class PhoneNumber {
 
     // Clone method for class with no references to mutable state
     @Override
-    public PhoneNumber clone() {
-        try {
-            return (PhoneNumber) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public PhoneNumber clone() throws CloneNotSupportedException {
+        return (PhoneNumber) super.clone();
     }
 
 }
