@@ -38,12 +38,12 @@ public class LinkedQueue<E extends Object & Comparable<E>> implements Queue<E> {
     }
 
     @Override
-    public E first() {
+    public E first() throws EmptyLinkedListException {
         return singlyLinkedList.first();
     }
 
     @Override
-    public E dequeue() {
+    public E dequeue() throws EmptyLinkedListException {
         return singlyLinkedList.removeFirst();
     }
 
