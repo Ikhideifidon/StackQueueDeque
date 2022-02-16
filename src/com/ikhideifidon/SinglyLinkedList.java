@@ -9,19 +9,19 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
-            Node<E> index = head;
+            Node<E> current = head;
 
             @Override
             public boolean hasNext() {
-                return (index != null);
+                return (current != null);
             }
 
             @Override
             public E next() {
                 if (!hasNext())
                     throw new NoSuchElementException();
-                E value = index.data;
-                index = index.next;
+                E value = current.data;
+                current = current.next;
                 return value;
             }
         };
@@ -31,30 +31,12 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         private E data;
         private Node<E> next;
 
-        public Node() { }
         public Node(E data) { this.data = data; }
 
         public Node(E data, Node<E> next) {
             this.data = data;
             this.next = next;
         }
-
-        public void setData(E data) {
-            this.data = data;
-        }
-
-        public void setNext(Node<E> next) {
-            this.next = next;
-        }
-
-        public E getData() {
-            return data;
-        }
-
-        public Node<E> getNext() {
-            return next;
-        }
-
 
     }
 
@@ -68,6 +50,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         currentSize = 0;
     }
 
+    public SinglyLinkedList(SinglyLinkedList<E> singlyLinkedList) {
+        this.head = singlyLinkedList.head;
+        this.tail = singlyLinkedList.tail;
+        this.currentSize = singlyLinkedList.currentSize;
+        this.hashCode = singlyLinkedList.hashCode;
+    }
+
+
     public int size() {
         return currentSize;
     }
@@ -76,15 +66,16 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         return currentSize == 0;
     }
 
-    public E first() {
+    public E first() throws EmptyLinkedListException{
         if (isEmpty())
-            return null;
-        return head.getData();
+            throw new EmptyLinkedListException();
+        return head.data;
     }
 
-    public E last() {
-        if (isEmpty()) return null;
-        return tail.getData();
+    public E last() throws EmptyLinkedListException {
+        if (isEmpty())
+            throw new EmptyLinkedListException();
+        return tail.data;
     }
 
     // update methods
@@ -101,25 +92,25 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         if (isEmpty())
             head = newest;
         else
-            tail.setNext(newest);
+            tail.next = newest;
         tail = newest;
         currentSize++;
     }
 
-    public E removeFirst() {
+    public E removeFirst() throws EmptyLinkedListException {
         if (isEmpty())
-            return null;
-        E answer = head.getData();
-        head = head.getNext();
+            throw new EmptyLinkedListException();
+        E answer = head.data;
+        head = head.next;
         currentSize--;
         if (currentSize == 0)
             tail = null;
         return answer;
     }
 
-    public E removeLast() {
+    public E removeLast() throws EmptyLinkedListException {
         if (isEmpty())
-            return null;
+            throw new EmptyLinkedListException();
         if (head == tail)
             return removeFirst();
         Node<E> current = head;
@@ -134,27 +125,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         return current.data;
     }
 
-
-    public E remove(E obj, Comparator<? super E> cmp) {            // Unnatural Ordering
-        Node<E> current = head;
-        Node<E> previous = null;
-        while (current != null) {
-            if (cmp.compare(current.data, obj) == 0) {
-                if (current == head)
-                    return removeFirst();
-                if (current == tail)
-                    return removeLast();
-                currentSize--;
-                previous.next = current.next;
-                return current.data;
-            }
-            previous = current;
-            current = current.next;
-        }
-        return null;
-    }
-
-    public E remove(E obj) {                                        // Natural Ordering
+    /**
+     * This method attempts to remove and return a given data if present in the SinglyLinkedList.
+     * A null value is returned if the given data is not found in the SinglyLinkedList.
+     * @param obj : The data to be removed
+     * @return : The removed data.
+     * @throws : EmptyLinkedListException
+     */
+    public E tryRemove(E obj) throws EmptyLinkedListException {                                        // Natural Ordering
         Node<E> current = head;
         Node<E> previous = null;
         while (current != null) {
@@ -174,8 +152,42 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         return null;
     }
 
+    /**
+     * The remove method removes and return the given data if present, otherwise a
+     * NoSuchElementException is thrown
+     * @param obj : The data to be removed
+     * @param cmp : The Comparator to be applied.
+     * @return : The removed data.
+     * @throws : EmptyLinkedListException
+     */
+
+    public E remove(E obj, Comparator<? super E> cmp) throws EmptyLinkedListException {            // Unnatural Ordering
+        Node<E> current = head;
+        Node<E> previous = null;
+        while (current != null) {
+            if (cmp.compare(current.data, obj) == 0) {
+                if (current == head)
+                    return removeFirst();
+                if (current == tail)
+                    return removeLast();
+                currentSize--;
+                previous.next = current.next;
+                return current.data;
+            }
+            previous = current;
+            current = current.next;
+        }
+        throw new NoSuchElementException();
+    }
+
+    public E remove(E obj) throws EmptyLinkedListException {                                        // Natural Ordering
+        E result = tryRemove(obj);
+        if (result == null)
+            throw new NoSuchElementException();
+        return result;
+    }
+
     public void reverse() {
-        Node<E> temp = head;
         Node<E> current = head;
         Node<E> previous = null;
         while (current != null) {
@@ -185,6 +197,10 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
             current = next;
         }
         head = previous;
+    }
+
+    public SinglyLinkedList<E> copy() {
+        return new SinglyLinkedList<>(this);
     }
 
     /**
@@ -217,14 +233,14 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
     public SinglyLinkedList<E> clone() throws CloneNotSupportedException {
         SinglyLinkedList<E> other = (SinglyLinkedList<E>) super.clone();
         if (currentSize > 0) {
-            other.head = new Node<>(head.getData(), null);
-            Node<E> walk = head.getNext();
+            other.head = new Node<>(head.data, null);
+            Node<E> walk = head.next;
             Node<E> otherTail = other.head;
             while (walk != null) {
-                Node<E> newest = new Node<>(walk.getData(), null);
-                otherTail.setNext(newest);
+                Node<E> newest = new Node<>(walk.data, null);
+                otherTail.next = newest;
                 otherTail = newest;
-                walk = walk.getNext();
+                walk = walk.next;
             }
 
         }
@@ -240,10 +256,10 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
             Node<?> walkA = head;
             Node<?> walkB = other.head;
             while (walkA != null) {
-                if (!walkA.getData().equals(walkB.getData()))           //mismatch
+                if (!walkA.data.equals(walkB.next))           //mismatch
                     return false;
-                walkA = walkA.getNext();
-                walkB = walkB.getNext();
+                walkA = walkA.next;
+                walkB = walkB.next;
             }
             return true;
         }
@@ -257,43 +273,10 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
         if (result == 0) {
             Node<E> current = head;
             while (current != null) {
-                result = 31 * result + (current.getData() == null ? 0 : current.getData().hashCode());
-                current = current.getNext();
+                result = 31 * result + (current.next == null ? 0 : current.next.hashCode());
+                current = current.next;
             }
             hashCode = result;
-        }
-        return result;
-    }
-
-    /**
-     * A non-static method that solves The Leetcode Add Two Numbers Medium Problem.
-     */
-    public SinglyLinkedList<Integer> addTwoNumber(SinglyLinkedList<Integer> other) {
-
-        if (!(head.getData() instanceof Integer))
-            throw new ClassCastException();
-        @SuppressWarnings("unchecked")
-        Node<Integer> current = (Node<Integer>) head;
-        SinglyLinkedList<Integer> result = new SinglyLinkedList<>();
-        int size = 0;
-        int carryOver = 0;
-        while (current != null || other.head != null || carryOver != 0) {
-            if (current != null) {
-                carryOver +=current.getData();
-                current = current.getNext();
-            }
-            if (other.head != null) {
-                carryOver += other.head.getData();
-                other.head = other.head.getNext();
-            }
-            Node<Integer> newest = new Node<>(carryOver % 10);
-            if (size == 0)
-                result.head = newest;
-            else
-                result.tail.setNext(newest);
-            result.tail = newest;
-            carryOver /= 10;
-            size++;
         }
         return result;
     }
@@ -303,11 +286,11 @@ public class SinglyLinkedList<E extends Comparable<E>> implements Iterable<E>, C
             return false;
         Node<E> current = listCollection.head;
         while (current != null) {
-            Node<E> newest = new Node<>(current.getData());
-            tail.setNext(newest);
+            Node<E> newest = new Node<>(current.data);
+            tail.next = newest;
             tail = newest;
             currentSize++;
-            current = current.getNext();
+            current = current.next;
         }
         return true;
     }
