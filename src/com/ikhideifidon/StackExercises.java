@@ -4,7 +4,7 @@ package com.ikhideifidon;
 /**
  * A Class of Stack Exercises
  */
-public class StackExercises {
+abstract class StackExercises {
 
     /**
      * A generic method for reversing an array
@@ -12,7 +12,7 @@ public class StackExercises {
      * @param <E>: Type parameter
      * @return A reversed array of type parameter
      */
-    public static <E extends Object & Comparable<E>> E[] reverseArray(E[] array) {
+    public static <E extends Object & Comparable<E>> E[] reverseArray(E[] array) throws EmptyLinkedListException {
         Stacks<E> arrayStack = new ArrayStack<>(array.length);
         for (E e : array) arrayStack.push(e);
         for (int i = 0; i < array.length; i++)
@@ -25,7 +25,7 @@ public class StackExercises {
      * @param expression: A String inputs
      * @return  boolean
      */
-    public static boolean isMatched(String expression) {
+    public static boolean isMatched(String expression) throws EmptyLinkedListException {
         final String open = "({[";
         final String close = ")}]";
         Stacks<Character> arrayStack = new ArrayStack<>();
@@ -50,7 +50,7 @@ public class StackExercises {
      * @param html: A string with some html tags
      * @return boolean
      */
-    public static boolean isHTMLMatched(String html) {
+    public static boolean isHTMLMatched(String html) throws EmptyLinkedListException {
         Stacks<String> arrayStack = new ArrayStack<>();
         int j = html.indexOf('<');                  // The first '<' character
         while (j != -1) {
