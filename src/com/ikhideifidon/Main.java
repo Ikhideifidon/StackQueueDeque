@@ -6,22 +6,23 @@ import static java.lang.System.out;
 
 public class Main {
 
-    public static void main(String[] args) throws CloneNotSupportedException {
+    public static void main(String[] args) throws CloneNotSupportedException, EmptyArrayQueueException, EmptyLinkedListException {
         if (!ManagementFactory.getRuntimeMXBean().getInputArguments().contains("-ea")) {
             out.println("Pass -ea to enable runtime assertions");
             return;
         }
 
-//        stackTest();
-//        intTest();
-//        stringTest();
-//        linkedListTest();
-//        arrayTest();
+        stackTest();
+        intTest();
+        stringTest();
+        linkedListTest();
+        arrayTest();
         arrayQueue();
-//        linkedStackTest();
+        linkedStackTest();
+        linkedQueue();
     }
 
-    public static void stackTest() throws CloneNotSupportedException {
+    public static void stackTest() throws CloneNotSupportedException, EmptyLinkedListException {
         Random rand = new Random();
         rand.setSeed(0);
         Stacks<Integer> stacks = new ArrayStack<>(12);
@@ -40,10 +41,19 @@ public class Main {
 
         Stacks<Integer> copiedStack = stacks.copy();
         out.println(copiedStack);
-        assert stacks != copiedStack;
-        assert stacks.equals(copiedStack);
-        assert stacks.getClass() == copiedStack.getClass();
-        assert stacks.hashCode() == copiedStack.hashCode();
+        stacks.pop();
+        out.println();
+        out.println();
+        out.println(stacks);
+        out.println(clonedStack);
+//        assert stacks != copiedStack;
+//        assert stacks.equals(copiedStack);
+//        assert stacks.getClass() == copiedStack.getClass();
+//        assert stacks.hashCode() == copiedStack.hashCode();
+//        clonedStack.pop();
+//        out.println(clonedStack);
+//        out.println(stacks);
+//        out.println(stacks.containsAll(clonedStack));
     }
 
     public static void intTest() {
@@ -99,7 +109,7 @@ public class Main {
         out.println(list.size());
     }
 
-    public static void arrayQueue() throws CloneNotSupportedException {
+    public static void arrayQueue() throws CloneNotSupportedException, EmptyArrayQueueException, EmptyLinkedListException {
         Queue<Integer> queue = new ArrayQueue<>();
 //        Random rand = new Random();
 //        rand.setSeed(System.currentTimeMillis());
@@ -149,9 +159,9 @@ public class Main {
         out.println(queue);
         out.println(clonedQueue);
         out.println(copiedQueue);
-        assert queue.equals(clonedQueue);
-        assert queue.equals(copiedQueue);
-        assert clonedQueue.equals(copiedQueue);
+//        assert queue.equals(clonedQueue);
+//        assert queue.equals(copiedQueue);
+//        assert clonedQueue.equals(copiedQueue);
         out.println(queue.hashCode());
         out.println(queue.hashCode() == copiedQueue.hashCode());
         out.println(queue);
@@ -160,11 +170,28 @@ public class Main {
         out.println(queue.copy());
         for (Integer integer : queue)
             out.println(integer);
+        out.println(queue.contains(10000));
+        copiedQueue.enqueue(111);
+        copiedQueue.dequeue();
+        copiedQueue.dequeue();
+        copiedQueue.dequeue();
+        copiedQueue.enqueue(566);
+        out.println(copiedQueue);
+        out.println(queue);
+
+//        Queue<Integer> myQueue = new ArrayQueue<>();
+//        myQueue.enqueue(11);
+//        myQueue.enqueue(19);
+//        myQueue.enqueue(4);
+//        myQueue.enqueue(27);
+//        myQueue.enqueue(1);
+//        out.println(queue.containsAll(myQueue));
+
 
 
     }
 
-    public static void linkedStackTest() throws CloneNotSupportedException {
+    public static void linkedStackTest() throws CloneNotSupportedException, EmptyLinkedListException {
         Stacks<Integer> linkedStack = new LinkedStack<>();
         linkedStack.push(21);
         linkedStack.push(12);
@@ -184,8 +211,14 @@ public class Main {
         out.println(linkedStack);
 
         Stacks<Integer> clonedLinkedStack = linkedStack.clone();
+        Stacks<Integer> copiedLinkedStack = linkedStack.copy();
+        out.println();
+        out.println();
+        out.println(copiedLinkedStack);
         out.println(clonedLinkedStack);
         linkedStack.pop();
+        out.println(linkedStack);
+        out.println(copiedLinkedStack);
         out.println(clonedLinkedStack);
         out.println(linkedStack.equals(clonedLinkedStack));
         out.println(linkedStack != clonedLinkedStack);
@@ -225,8 +258,40 @@ public class Main {
         intList[3] = 0;
         out.println();
         out.println(intList.hashCode());
+    }
 
+    public static void linkedQueue() {
+        Queue<Integer> linkedQueue = new LinkedQueue<>();
+        linkedQueue.enqueue(28);
+        linkedQueue.enqueue(2);
+        linkedQueue.enqueue(5);
+        linkedQueue.enqueue(15);
+        linkedQueue.enqueue(3);
+        linkedQueue.enqueue(12);
+        linkedQueue.enqueue(8);
+        out.println(linkedQueue);
+
+        Queue<Integer> copiedLinkedQueue = linkedQueue.copy();
+        linkedQueue.enqueue(560);
+        out.println(linkedQueue);
+        out.println(copiedLinkedQueue);
+
+        SinglyLinkedList<Integer> s1 = new SinglyLinkedList<>();
+        s1.addFirst(4);
+        s1.addFirst(10);
+        s1.addFirst(18);
+        s1.addFirst(89);
+        s1.addFirst(23);
+        out.println(s1);
+
+        SinglyLinkedList<Integer> s2 = s1.copy();
+        s1.addFirst(78);
+        s2.addFirst(100);
+        out.println(s2);
+        out.println(s1);
 
     }
+
+
 
 }
