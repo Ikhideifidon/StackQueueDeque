@@ -1,7 +1,6 @@
 package com.ikhideifidon;
 
 public class EmptyArrayQueueException extends Exception {
-
     public EmptyArrayQueueException() { }
     public EmptyArrayQueueException(String message) {
         super(message);
