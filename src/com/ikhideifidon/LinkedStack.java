@@ -25,12 +25,12 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
     }
 
     @Override
-    public E pop() {
+    public E pop() throws EmptyLinkedListException {
         return singlyLinkedList.removeFirst();
     }
 
     @Override
-    public E top() {
+    public E top() throws EmptyLinkedListException {
         return singlyLinkedList.first();
     }
 
@@ -73,8 +73,13 @@ public class LinkedStack<E extends Object & Comparable<E>> implements Stacks<E> 
         Stacks<E> clonedLinkedStack = new LinkedStack<>();
         SinglyLinkedList<E> clonedSinglyLinkedList = singlyLinkedList.clone();
         clonedSinglyLinkedList.reverse();
-        while (!clonedSinglyLinkedList.isEmpty())
-            clonedLinkedStack.push(clonedSinglyLinkedList.removeFirst());
+        while (!clonedSinglyLinkedList.isEmpty()) {
+            try {
+                clonedLinkedStack.push(clonedSinglyLinkedList.removeFirst());
+            } catch (EmptyLinkedListException e) {
+                e.printStackTrace();
+            }
+        }
         return clonedLinkedStack;
     }
 
