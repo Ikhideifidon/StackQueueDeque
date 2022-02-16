@@ -14,12 +14,12 @@ public interface Stacks<E extends Comparable<E>> extends Iterable<E>, Cloneable 
      * Removes and returns the top element from the collection
      * or null if the collection is empty.
      */
-    E pop();
+    E pop() throws EmptyLinkedListException;
 
     /** Returns the top element of the collection, without removing it
      * or null if the stack is empty.
      */
-    E top();
+    E top() throws EmptyLinkedListException;
 
     /**
      * Returns the number of elements in the collection.
