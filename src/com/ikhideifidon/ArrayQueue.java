@@ -49,9 +49,9 @@ public class ArrayQueue<E extends Object & Comparable<E>> implements Queue<E> {
     }
 
     @Override
-    public E dequeue() {
+    public E dequeue() throws EmptyArrayQueueException {
         if (isEmpty())
-            throw new NullPointerException();
+            throw new EmptyArrayQueueException();
         E answer = data[f];
         data[f] = null;                         // Java garbage collection.
         f = (f + 1) % data.length;
